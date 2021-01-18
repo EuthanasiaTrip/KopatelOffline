@@ -29,10 +29,34 @@ draw_window:
    mcall        71, 2, header, 1
    ; Отрисовка текста:                                   SysFn04
    mcall        4, <30, 10>, tstyle, string
+   ; Попытка отрисовать изображение:
+   mcall 1, 10, 10, 0x00FF0000
+   mcall 1, 11, 10, 0x0000FF00
+   mcall 1, 12, 10, 0x000000FF
+   mcall 1, 10, 11, 0x00FF0000
+   mcall 1, 11, 11, 0x0000FF00
+   mcall 1, 12, 11, 0x000000FF
+   mcall 1, 10, 12, 0x00FF0000
+   mcall 1, 11, 12, 0x0000FF00
+   mcall 1, 12, 12, 0x000000FF
+
+   ; Пробую вызвать COM порт, результат отрицательный - ебать я
+   ;jmp com_send
    ; Конец отрисовки:                                    SysFn12
    mcall        12, 2
    ; Выход из процедуры
    ret
+
+com_debug:
+   mcall 4, <30, 30>, tstyle, string
+
+com_send:
+   mov eax, 43
+   mov bl, 0xFF
+   mov ecx, 0x4
+   mcall
+   xor eax, 0
+   js com_debug
 
 DATA
    ; Переменные интерфейса приложения
@@ -43,6 +67,8 @@ DATA
 
    ; Флаги статуса подключенного беспилотника
    droneStatus       db   'Online', 0
+   droneThumper      db   'Thumper', 0
+   droneElon         db   'Mecanum', 0
    droneMovement     db   'Movement', 0
    droneIdle         db   'Idling', 0
    droneBattery      db   'Battery', 0
@@ -64,7 +90,7 @@ DATA
     ts_danger        =     0x80FF1600
 
    ; Константы интерфейса приложения
-   droneDigger       =    'Digger Offline', 0
+   droneDigger       db    'Digger Offline', 0
 
 UDATA
 
