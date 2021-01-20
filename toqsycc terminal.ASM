@@ -21,17 +21,51 @@ key:
    jmp          wait_event
 
 draw_window:
-   ; –ù–∞—á–∞–ª–æ –æ—Ç—Ä–∏—Å–æ–≤–∫–∏ –æ–∫–Ω–∞:                              SysFn12
+   ; ç†Á†´Æ Æ‚‡®·Æ¢™® Æ™≠†:                              SysFn12
    mcall        12, 1
-   ; –û–ø—Ä–µ–¥–µ–ª–µ–Ω–∏–µ –æ–∫–Ω–∞:                                   SysFn00
+   ; éØ‡•§•´•≠®• Æ™≠†:                                   SysFn00
    mcall        0, <0, 1023>, <0, 767>, wstyle, wheader, wframe
-   ; –û—Ç—Ä–∏—Å–æ–≤–∫–∞ –∑–∞–≥–æ–ª–æ–≤–∫–∞ –æ–∫–Ω–∞                            SysFn71
+   ; é‚‡®·Æ¢™† ß†£Æ´Æ¢™† Æ™≠†                            SysFn71
    mcall        71, 2, header, 1
-   ; –û—Ç—Ä–∏—Å–æ–≤–∫–∞ —Ç–µ–∫—Å—Ç–∞:                                   SysFn04
+   ; é‚‡®·Æ¢™† ‚•™·‚†:                                   SysFn04
    mcall        4, <30, 10>, tstyle, string
-   ; –ü–æ–ø—ã—Ç–∫–∞ –æ—Ç—Ä–∏—Å–æ–≤–∞—Ç—å –∏–∑–æ–±—Ä–∞–∂–µ–Ω–∏–µ:
+   ; èÆØÎ‚™† Æ‚‡®·Æ¢†‚Ï ®ßÆ°‡†¶•≠®•:
 
-   ; –û—Ç—Ä–∏—Å–æ–≤–∫–∞ –ø–ª–µ–π—Å—Ö–æ–ª–¥–µ—Ä–∞ –∫–∞—Ä—Ç–∏–Ω–∫–∏ —Å –∫–∞–º–µ—Ä—ã, —Ä–∞–∑—Ä–µ—à–µ–Ω–∏–µ 644—Ö480
+   ; é‚‡®·Æ¢™† ‡†¨™® Ì™‡†≠†
+   mov ebp, 0x00323232
+   mov edi, 1017
+   mov esi, 5
+fra:
+   mcall 1, edi, esi, ebp
+   dec edi
+   cmp edi, esi
+   jne fra
+
+   mov edi, 1017
+   mov esi, 45
+frb:
+   mcall 1, edi, esi, ebp
+   dec edi
+   cmp edi, 5
+   jne frb
+
+   mov edi, 5
+   mov esi, 5
+frc:
+   mcall 1, edi, esi, ebp
+   inc esi
+   cmp esi, 46
+   jne frc
+
+   mov edi, 1017
+   dec esi
+frd:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 5
+   jne frd
+
+   ; é‚‡®·Æ¢™† Ø´•©·ÂÆ´§•‡† ™†‡‚®≠™® · ™†¨•‡Î, ‡†ß‡•Ë•≠®• 644Â480
    mov ebp, 0x000000FF
    mov edi, picWidth
    mov esi, picHeight
@@ -42,7 +76,7 @@ a:
    jne a
    dec edi
    mov esi, picHeight
-   cmp edi, 652
+   cmp edi, 672
    jne a
 
    mov ebp, 0x00FF0000
@@ -56,7 +90,7 @@ b:
    jne b
    dec edi
    mov esi, picHeight
-   cmp edi, 560
+   cmp edi, 580
    jne b
 
    mov ebp, 0x00FF00FF
@@ -70,7 +104,7 @@ c:
    jne c
    dec edi
    mov esi, picHeight
-   cmp edi, 468
+   cmp edi, 488
    jne c
 
    mov ebp, 0x0000FF00
@@ -84,7 +118,7 @@ d:
    jne d
    dec edi
    mov esi, picHeight
-   cmp edi, 376
+   cmp edi, 396
    jne d
 
    mov ebp, 0x0000FFFF
@@ -98,7 +132,7 @@ e:
    jne e
    dec edi
    mov esi, picHeight
-   cmp edi, 284
+   cmp edi, 304
    jne e
 
    mov ebp, 0x00FFFF00
@@ -112,7 +146,7 @@ f:
    jne f
    dec edi
    mov esi, picHeight
-   cmp edi, 192
+   cmp edi, 212
    jne f
 
    mov ebp, 0x00FFFFFF
@@ -126,27 +160,41 @@ g:
    jne g
    dec edi
    mov esi, picHeight
-   cmp edi, 100
+   cmp edi, 120
    jne g
 
    mov edi, 0x00000000
-   mcall 4, <335, 275>, 0xC2FFFFFF, signal
+   mcall 4, <370, 275>, 0xC2FFFFFF, signal
 
-   ; –û—Ç—Ä–∏—Å–æ–≤–∫–∞ —Ñ–ª–∞–≥–æ–≤ —Å–æ—Å—Ç–æ—è–Ω–∏—è –¥—Ä–æ–Ω–∞
-   ; –ù–∞–¥–æ –±—É–¥–µ—Ç –∏—Ö —É–ø–æ—Ä—è–¥–æ—á–∏—Ç—å –∏ –∏–∑–º–µ–Ω–∏—Ç—å –æ–∫—Ä–∞—Å–∫–∏...
-   mcall 4, <10, 50>, ts_error, droneStatus
-   mcall 4, <10, 60>, ts_idle, droneBattery
-   mcall 4, <10, 70>, ts_idle, droneMovement
-   mcall 4, <10, 80>, ts_active, droneIdle
-   mcall 4, <10, 90>, ts_idle, droneLaser
-   mcall 4, <10, 100>, ts_idle, droneLights
-   mcall 4, <10, 110>, ts_danger, droneWarning
+   ; é‚‡®·Æ¢™† ‰´†£Æ¢ ·Æ·‚ÆÔ≠®Ô §‡Æ≠†
+   ; ç†§Æ °„§•‚ ®Â „ØÆ‡Ô§ÆÁ®‚Ï ® ®ß¨•≠®‚Ï Æ™‡†·™®...
+   mcall 4, <10, 50>, ts_category, flagshd
+   mcall 4, <15, 60>, ts_error, droneStatus
+   mcall 4, <15, 70>, ts_error, droneBattery
+   mcall 4, <15, 80>, ts_error, droneMovement
+   mcall 4, <15, 90>, ts_error, droneAutomove
+   mcall 4, <15, 100>, ts_error, droneManipulator
+   mcall 4, <15, 110>, ts_error, droneAutoasm
+   mcall 4, <15, 120>, ts_error, droneWarning
+   mcall 4, <15, 130>, ts_error, droneDamaged
 
-   ; –ü—Ä–æ–±—É—é –≤—ã–∑–≤–∞—Ç—å COM –ø–æ—Ä—Ç, —Ä–µ–∑—É–ª—å—Ç–∞—Ç –æ—Ç—Ä–∏—Ü–∞—Ç–µ–ª—å–Ω—ã–π - –µ–±–∞—Ç—å —è
+   mcall 4, <10, 150>, ts_category, flagshd2
+   mcall 4, <15, 160>, ts_active, droneIdle
+   mcall 4, <15, 170>, ts_idle, droneThumper
+   mcall 4, <15, 180>, ts_idle, droneElon
+   mcall 4, <15, 190>, ts_danger, droneLights
+   mcall 4, <15, 200>, ts_danger, droneLaser
+
+   mcall 4, <10, 220>, ts_category, flagshd3
+   mcall 4, <15, 230>, ts_idle, aboutCOM
+   mcall 4, <15, 240>, ts_idle, control
+   mcall 4, <15, 250>, ts_idle, speedConf
+
+   ; è‡Æ°„Ó ¢Îß¢†‚Ï COM ØÆ‡‚, ‡•ß„´Ï‚†‚ Æ‚‡®Ê†‚•´Ï≠Î©
    ;jmp com_send
-   ; –ö–æ–Ω–µ—Ü –æ—Ç—Ä–∏—Å–æ–≤–∫–∏:                                    SysFn12
+   ; äÆ≠•Ê Æ‚‡®·Æ¢™®:                                    SysFn12
    mcall        12, 2
-   ; –í—ã—Ö–æ–¥ –∏–∑ –ø—Ä–æ—Ü–µ–¥—É—Ä—ã
+   ; ÇÎÂÆ§ ®ß Ø‡ÆÊ•§„‡Î
    ret
 
 com_debug:
@@ -161,10 +209,10 @@ com_send:
    js com_debug
 
 DATA
-   picWidth          =   744
+   picWidth          =   784
    picHeight         =   530
 
-   ; –ü–µ—Ä–µ–º–µ–Ω–Ω—ã–µ –∏–Ω—Ç–µ—Ä—Ñ–µ–π—Å–∞ –ø—Ä–∏–ª–æ–∂–µ–Ω–∏—è
+   ; è•‡•¨•≠≠Î• ®≠‚•‡‰•©·† Ø‡®´Æ¶•≠®Ô
    header            db   'toqsycc labs : drone terminal mk.1 rev.0', 0
    string            db   'Sample string', 0
    signal            db   'NO SIGNAL!', 0
@@ -172,9 +220,12 @@ DATA
    aboutDrone        db   'Connected: ', 0
    speedConf         db   'Speeds group: ', 0
    control           db   'Controller: ', 0
+   flagshd           db   'IMP FLAGS :', 0
+   flagshd2          db   'ADD FLAGS :', 0
+   flagshd3          db   'COM FLAGS :', 0
 
 
-   ; –§–ª–∞–≥–∏ —Å—Ç–∞—Ç—É—Å–∞ –ø–æ–¥–∫–ª—é—á–µ–Ω–Ω–æ–≥–æ –±–µ—Å–ø–∏–ª–æ—Ç–Ω–∏–∫
+   ; î´†£® ·‚†‚„·† ØÆ§™´ÓÁ•≠≠Æ£Æ °•·Ø®´Æ‚≠®™†
    droneStatus       db   'Online', 0
    droneLaser        db   'Laser', 0
    droneThumper      db   'Thumper', 0
@@ -189,17 +240,18 @@ DATA
    droneWarning      db   'Warning', 0
    droneDamaged      db   'Damaged', 0
 
-   ; –ö–æ–Ω—Å—Ç–∞–Ω—Ç—ã —Å—Ç–∏–ª—è –∏–Ω—Ç–µ—Ä—Ñ–µ–π—Å–∞ –ø—Ä–∏–ª–æ–∂–µ–Ω–∏—è
+   ; äÆ≠·‚†≠‚Î ·‚®´Ô ®≠‚•‡‰•©·† Ø‡®´Æ¶•≠®Ô
    wstyle            =     0x30000000
     wheader          =     0x01000000
-    wframe           =     0x000000FF
+    wframe           =     0x00323232
    tstyle            =     0x80000000
-    ts_active        =     0x80FFFF32
-    ts_idle          =     0x80323232
+    ts_active        =     0x8000FF16
+    ts_idle          =     0x80646464
     ts_error         =     0x80FF0000
-    ts_danger        =     0x80FF1600
+    ts_danger        =     0x80FF9600
+    ts_category      =     0x80FFFFFF
 
-   ; –ö–æ–Ω—Å—Ç–∞–Ω—Ç—ã –∏–Ω—Ç–µ—Ä—Ñ–µ–π—Å–∞ –ø—Ä–∏–ª–æ–∂–µ–Ω–∏—è 
+   ; äÆ≠·‚†≠‚Î ®≠‚•‡‰•©·† Ø‡®´Æ¶•≠®Ô
    droneDigger       db    'Digger Offline', 0
 
 UDATA
