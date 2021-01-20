@@ -151,7 +151,7 @@ f:
 
    mov ebp, 0x00FFFFFF
    mov edi, picWidth
-   sub edi, 552
+   sub edi, 572
    mov esi, picHeight
 g:
    mcall 1, edi, esi, ebp
@@ -165,6 +165,48 @@ g:
 
    mov edi, 0x00000000
    mcall 4, <370, 275>, 0xC2FFFFFF, signal
+
+   ; Отрисовка рамки видео
+   mov ebp, 0x00FFFF00
+   mov edi, 121
+   mov esi, 50
+frva:
+   mcall 1, edi, esi, ebp
+   inc edi
+   cmp edi, 785
+   jne frva
+
+   mov esi, 530
+   dec edi
+frvb:
+   mcall 1, edi, esi, ebp
+   dec edi
+   cmp edi, 120
+   jne frvb
+
+   inc edi
+frvc:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 50
+   jne frvc
+
+   mov edi, 784
+   inc esi
+frvd:
+   mcall 1, edi, esi, ebp
+   inc esi
+   cmp esi, 530
+   jne frvd
+
+   mov edi, 0x00000000
+   mcall 4, <654, 505>, 0xC2FFFFFF, cam
+   mcall 4, <768, 505>, 0xC2FFFFFF, numCamera
+
+   mcall 4, <10, 6>, ts_idle, prevStatus2
+   mcall 4, <10, 16>, ts_idle, prevStatus1
+   mcall 4, <10, 26>, ts_danger, currStatus
+   mcall 4, <10, 36>, ts_active, terminalIn
 
    ; Отрисовка флагов состояния дрона
    ; Надо будет их упорядочить и изменить окраски...
@@ -185,10 +227,13 @@ g:
    mcall 4, <15, 190>, ts_danger, droneLights
    mcall 4, <15, 200>, ts_danger, droneLaser
 
-   mcall 4, <10, 220>, ts_category, flagshd3
-   mcall 4, <15, 230>, ts_idle, aboutCOM
-   mcall 4, <15, 240>, ts_idle, control
-   mcall 4, <15, 250>, ts_idle, speedConf
+   mcall 4, <800, 50>, ts_category, flagshd3
+   mcall 4, <805, 60>, ts_idle, aboutCOM
+   mcall 4, <805, 70>, ts_idle, control
+   mcall 4, <805, 80>, ts_idle, speedConf
+
+   mcall 4, <800, 100>, ts_category, flagshd4
+   mcall 4, <805, 110>, ts_idle, aboutDrone
 
    ; Пробую вызвать COM порт, результат отрицательный
    ;jmp com_send
@@ -223,7 +268,13 @@ DATA
    flagshd           db   'IMP FLAGS :', 0
    flagshd2          db   'ADD FLAGS :', 0
    flagshd3          db   'COM FLAGS :', 0
-
+   flagshd4          db   'DRONE DATA :', 0
+   cam               db   'CAMERA ', 0
+   numCamera         db   49, 0
+   currStatus        db   'Terminal initialised successfully.', 0
+   prevStatus1       db   'COM port not found. Task ignored.', 0
+   prevStatus2       db   'Receiver not found. Task ignored.', 0
+   terminalIn        db   '#toqsycc > ', 0
 
    ; Флаги статуса подключенного беспилотника
    droneStatus       db   'Online', 0
