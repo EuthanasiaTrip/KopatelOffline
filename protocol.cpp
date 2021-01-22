@@ -4,37 +4,37 @@ using namespace std;
 
 int main()
 {
-	system("chcp 1251"); // у меня терминал ёбнутый, не обращай внимания
+	system("chcp 1251"); // РЎС‚Р°РІР»СЋ СѓРґРѕР±РЅСѓСЋ РґР»СЏ СЃРІРѕРµРіРѕ С‚РµСЂРјРёРЅР°Р»Р° РєРѕРґРёСЂРѕРІРєСѓ
 	system("cls");
 
-	// Ключи, хранящиеся в памяти дрона:
+	// РћР±СЉСЏРІР»РµРЅРёРµ Рё РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєРѕРЅСЃС‚Р°РЅС‚С‹-РєР»СЋС‡Р°:
 	const unsigned char key = 0x49;
 
-	// Входящий пакет данных в 40 бит:
+	// РћР±СЉСЏРІР»РµРЅРёРµ Рё РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ "РІС…РѕРґСЏС‰РµРіРѕ РїР°РєРµС‚Р°":
 	unsigned char incoming[5] = { 0x4C, 0xF2, 0x1F, 0xF4, 0x09 };
 
-	// Транслированный пакет команд:
+	// РћР±СЉСЏРІР»РµРЅРёРµ "РёСЃС…РѕРґСЏС‰РµРіРѕ РїР°РєРµС‚Р°":
 	unsigned char translated[4];
 
-	// Сначала обработаю ключи:
+	// РџСЂРѕРІРµСЂСЏСЋ РєР»СЋС‡Рё РЅР° СЃРѕРІРїР°РґРµРЅРёРµ:
 	bool operandL = (0xF0 & incoming[0]) == (0xF0 & key);
 	bool operandR = (0x0F & incoming[4]) == (0x0F & key);
 
 	if (operandL && operandR)
 	{
-		cout << "Ключи совпали, трансляция команды\n";
-		// Транслирую команды с помощью масок
+		cout << "Keys are equal, translating\n";
+		// РўСЂР°РЅСЃР»РёСЂСѓСЋ СЃ РїРѕРјРѕС‰СЊСЋ Р±РёС‚РѕРІС‹С… РјР°СЃРѕРє С„СЂР°РіРјРµРЅС‚С‹ РєРѕРјР°РЅРґ Рё Р°СЂРіСѓРјРµРЅС‚РѕРІ
 		translated[0] = ((0x0F & incoming[0]) << 4) | ((0xF0 & incoming[1]) >> 4);
 		translated[1] = ((0x0F & incoming[1]) << 4) | ((0xF0 & incoming[2]) >> 4);
 		translated[2] = ((0x0F & incoming[2]) << 4) | ((0xF0 & incoming[3]) >> 4);
 		translated[3] = ((0x0F & incoming[3]) << 4) | ((0xF0 & incoming[4]) >> 4);
 
-		cout << "Транслированные команды: ";
+		cout << "Translated commands: ";
 		for (char i = 0; i < 4; i++) cout << setw(2) << setfill('0') << hex << static_cast<unsigned short>(translated[i]) << " ; ";
 		cout << endl;
 	}
 
-	else cout << "Ключи не совпадают, пакет будет проигнорирован\n";
+	else cout << "Keys are not equal, operation aborted\n";
 
 	system("pause>0");
 	return 0;
