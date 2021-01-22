@@ -430,7 +430,7 @@ DATA                            ; PROGRAM DATA BLOCK
    droneManipulator  db   'Manipulator', 0
    droneWarning      db   'Warning', 0
    droneDamaged      db   'Damaged', 0
-   droneDigger       db    'Digger Offline', 0
+   droneDigger       db   'Digger Offline', 0
                                 ;
    ;----------------------------;
    ;  ADDITIVE CONSTANTS BLOCK  ;
