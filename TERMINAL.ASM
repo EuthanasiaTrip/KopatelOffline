@@ -1,0 +1,335 @@
+include "macros.inc"
+
+MEOS_APP_START
+
+CODE
+
+redraw:
+   call draw_window
+
+wait_event:
+   mcall        10
+   cmp eax, 1
+   je redraw
+   cmp eax, 2
+   je key
+   mcall -1
+
+   jmp wait_event
+
+camera_dec:
+   mov al, [numCamera]
+   cbw
+   dec ax
+   mov [numCamera], ah
+   jmp feedback
+
+camera_inc:
+   mov al, [numCamera]
+   cbw
+   inc ax
+   mov [numCamera], ah
+   jmp feedback
+
+key:
+   mcall        2
+   mov [keyid], ah
+   mov ebp, keyid
+   cmp ebp, 45
+   je camera_dec
+   cmp ebp, 43
+   je camera_inc
+feedback:
+   call draw_window
+   jmp          wait_event
+
+draw_window:
+   ; Ќ з «® ®ваЁб®ўЄЁ ®Є­ :                              SysFn12
+   mcall        12, 1
+   ; ЋЇаҐ¤Ґ«Ґ­ЁҐ ®Є­ :                                   SysFn00
+   mcall        0, <0, 1023>, <0, 767>, wstyle, wheader, wframe
+   ; ЋваЁб®ўЄ  § Ј®«®ўЄ  ®Є­                             SysFn71
+   mcall        71, 2, header, 1
+   ; ЋваЁб®ўЄ  вҐЄбв :                                   SysFn04
+   mcall        4, <30, 10>, tstyle, string
+   ; Џ®ЇлвЄ  ®ваЁб®ў вм Ё§®Ўа ¦Ґ­ЁҐ:
+
+   ; ЋваЁб®ўЄ  а ¬ЄЁ нЄа ­ 
+   mov ebp, 0x00323232
+   mov edi, 1017
+   mov esi, 5
+fra:
+   mcall 1, edi, esi, ebp
+   dec edi
+   cmp edi, esi
+   jne fra
+
+   mov edi, 1017
+   mov esi, 45
+frb:
+   mcall 1, edi, esi, ebp
+   dec edi
+   cmp edi, 5
+   jne frb
+
+   mov edi, 5
+   mov esi, 5
+frc:
+   mcall 1, edi, esi, ebp
+   inc esi
+   cmp esi, 46
+   jne frc
+
+   mov edi, 1017
+   dec esi
+frd:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 5
+   jne frd
+
+   ; ЋваЁб®ўЄ  Ї«Ґ©бе®«¤Ґа  Є авЁ­ЄЁ б Є ¬Ґал, а §аҐиҐ­ЁҐ 644е480
+   mov ebp, 0x000000FF
+   mov edi, picWidth
+   mov esi, picHeight
+a:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 50
+   jne a
+   dec edi
+   mov esi, picHeight
+   cmp edi, 672
+   jne a
+
+   mov ebp, 0x00FF0000
+   mov edi, picWidth
+   sub edi, 92
+   mov esi, picHeight
+b:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 50
+   jne b
+   dec edi
+   mov esi, picHeight
+   cmp edi, 580
+   jne b
+
+   mov ebp, 0x00FF00FF
+   mov edi, picWidth
+   sub edi, 184
+   mov esi, picHeight
+c:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 50
+   jne c
+   dec edi
+   mov esi, picHeight
+   cmp edi, 488
+   jne c
+
+   mov ebp, 0x0000FF00
+   mov edi, picWidth
+   sub edi, 276
+   mov esi, picHeight
+d:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 50
+   jne d
+   dec edi
+   mov esi, picHeight
+   cmp edi, 396
+   jne d
+
+   mov ebp, 0x0000FFFF
+   mov edi, picWidth
+   sub edi, 368
+   mov esi, picHeight
+e:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 50
+   jne e
+   dec edi
+   mov esi, picHeight
+   cmp edi, 304
+   jne e
+
+   mov ebp, 0x00FFFF00
+   mov edi, picWidth
+   sub edi, 460
+   mov esi, picHeight
+f:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 50
+   jne f
+   dec edi
+   mov esi, picHeight
+   cmp edi, 212
+   jne f
+
+   mov ebp, 0x00FFFFFF
+   mov edi, picWidth
+   sub edi, 572
+   mov esi, picHeight
+g:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 50
+   jne g
+   dec edi
+   mov esi, picHeight
+   cmp edi, 120
+   jne g
+
+   mov edi, 0x00000000
+   mcall 4, <370, 275>, 0xC2FFFFFF, signal
+
+   ; ЋваЁб®ўЄ  а ¬ЄЁ ўЁ¤Ґ®
+   mov ebp, 0x00FFFF00
+   mov edi, 121
+   mov esi, 50
+frva:
+   mcall 1, edi, esi, ebp
+   inc edi
+   cmp edi, 785
+   jne frva
+
+   mov esi, 530
+   dec edi
+frvb:
+   mcall 1, edi, esi, ebp
+   dec edi
+   cmp edi, 120
+   jne frvb
+
+   inc edi
+frvc:
+   mcall 1, edi, esi, ebp
+   dec esi
+   cmp esi, 50
+   jne frvc
+
+   mov edi, 784
+   inc esi
+frvd:
+   mcall 1, edi, esi, ebp
+   inc esi
+   cmp esi, 530
+   jne frvd
+
+   mov edi, 0x00000000
+   mcall 4, <654, 505>, 0xC2FFFFFF, cam
+   mcall 4, <768, 505>, 0xC2FFFFFF, numCamera
+
+   mcall 4, <10, 6>, ts_idle, prevStatus2
+   mcall 4, <10, 16>, ts_idle, prevStatus1
+   mcall 4, <10, 26>, ts_danger, currStatus
+   mcall 4, <10, 36>, ts_active, terminalIn
+
+   ; ЋваЁб®ўЄ  д« Ј®ў б®бв®п­Ёп ¤а®­ 
+   ; Ќ ¤® Ўг¤Ґв Ёе гЇ®ап¤®зЁвм Ё Ё§¬Ґ­Ёвм ®Єа бЄЁ...
+   mcall 4, <10, 50>, ts_category, flagshd
+   mcall 4, <15, 60>, ts_error, droneStatus
+   mcall 4, <15, 70>, ts_error, droneBattery
+   mcall 4, <15, 80>, ts_error, droneMovement
+   mcall 4, <15, 90>, ts_error, droneAutomove
+   mcall 4, <15, 100>, ts_error, droneManipulator
+   mcall 4, <15, 110>, ts_error, droneAutoasm
+   mcall 4, <15, 120>, ts_error, droneWarning
+   mcall 4, <15, 130>, ts_error, droneDamaged
+
+   mcall 4, <10, 150>, ts_category, flagshd2
+   mcall 4, <15, 160>, ts_active, droneIdle
+   mcall 4, <15, 170>, ts_idle, droneThumper
+   mcall 4, <15, 180>, ts_idle, droneElon
+   mcall 4, <15, 190>, ts_danger, droneLights
+   mcall 4, <15, 200>, ts_danger, droneLaser
+
+   mcall 4, <800, 50>, ts_category, flagshd3
+   mcall 4, <805, 60>, ts_idle, aboutCOM
+   mcall 4, <805, 70>, ts_idle, control
+   mcall 4, <805, 80>, ts_idle, speedConf
+
+   mcall 4, <800, 100>, ts_category, flagshd4
+   mcall 4, <805, 110>, ts_idle, aboutDrone
+
+   ; Џа®Ўго ўл§ў вм COM Ї®ав, аҐ§г«мв в ®ваЁж вҐ«м­л©
+   ;jmp com_send
+   ; Љ®­Ґж ®ваЁб®ўЄЁ:                                    SysFn12
+   mcall        12, 2
+   ; ‚ле®¤ Ё§ Їа®жҐ¤гал
+   ret
+
+com_debug:
+   mcall 4, <30, 30>, tstyle, string
+
+com_send:
+   mov eax, 43
+   mov bl, 0xFF
+   mov ecx, 0x4
+   mcall
+   xor eax, 0
+   js com_debug
+
+DATA
+   picWidth          =   784
+   picHeight         =   530
+
+   ; ЏҐаҐ¬Ґ­­лҐ Ё­вҐадҐ©б  ЇаЁ«®¦Ґ­Ёп
+   header            db   'toqsycc labs : drone terminal mk.1 rev.0', 0
+   string            db   'Sample string', 0
+   signal            db   'NO SIGNAL!', 0
+   aboutCOM          db   'RC on COM ', 0
+   aboutDrone        db   'Connected: ', 0
+   speedConf         db   'Speeds group: ', 0
+   control           db   'Controller: ', 0
+   flagshd           db   'IMP FLAGS :', 0
+   flagshd2          db   'ADD FLAGS :', 0
+   flagshd3          db   'COM FLAGS :', 0
+   flagshd4          db   'DRONE DATA :', 0
+   cam               db   'CAMERA ', 0
+   numCamera         db   49, 0
+   currStatus        db   'Terminal initialised successfully.', 0
+   prevStatus1       db   'COM port not found. Task ignored.', 0
+   prevStatus2       db   'Receiver not found. Task ignored.', 0
+   terminalIn        db   '#toqsycc > ', 0
+
+   ; ”« ЈЁ бв вгб  Ї®¤Є«озҐ­­®Ј® ЎҐбЇЁ«®в­ЁЄ 
+   droneStatus       db   'Online', 0
+   droneLaser        db   'Laser', 0
+   droneThumper      db   'Thumper', 0
+   droneElon         db   'Mecanum', 0
+   droneMovement     db   'Movement', 0
+   droneIdle         db   'Idling', 0
+   droneBattery      db   'Battery', 0
+   droneAutomove     db   'Automovement', 0
+   droneAutoasm      db   'Autoassembling', 0
+   droneLights       db   'Light', 0
+   droneManipulator  db   'Manipulator', 0
+   droneWarning      db   'Warning', 0
+   droneDamaged      db   'Damaged', 0
+
+   ; Љ®­бв ­вл бвЁ«п Ё­вҐадҐ©б  ЇаЁ«®¦Ґ­Ёп
+   wstyle            =     0x30000000
+    wheader          =     0x01000000
+    wframe           =     0x00323232
+   tstyle            =     0x80000000
+    ts_active        =     0x8000FF16
+    ts_idle          =     0x80646464
+    ts_error         =     0x80FF0000
+    ts_danger        =     0x80FF9600
+    ts_category      =     0x80FFFFFF
+
+   ; Љ®­бв ­вл Ё­вҐадҐ©б  ЇаЁ«®¦Ґ­Ёп
+   droneDigger       db    'Digger Offline', 0
+
+   keyid: rb 1
+
+UDATA
+
+MEOS_APP_END
