@@ -1,29 +1,49 @@
 #pragma once
-#define BYTE_KEY		0x69 // ключ
-#define MSG_BYTES		5 // размер входящего сообщения в байтах
-#define CMD_BYTES		4 // размер команды в байтах
-//=============================Системные команды=============================
-//=============================Команды управления=============================
-// АВТОЕЗДА:
+#define BYTE_KEY		0x69 // key
+#define MSG_BYTES		5 // size of incoming message in bytes
+#define CMD_BYTES		4 // size of command in bytes	
+//=============================SYSTEM COMMANDS=============================
+
+#define CMD_SUCCESS						        0x01 // command executed successfully
+#define INVALID_INPUT					        0x02 // drone got unindentified command value
+#define INVALID_CMD						        0x03 // drone got unindentified command
+#define THUMPER_CONNECTION_FAILURE		0x04 // mega couldn't connect to thumper's board
+
+//=============================DRONE CONTROL COMMANDS=============================
+
+// AUTOMOVE:
+
 #define AUTOMOVE			0x41
-// СВЕТ:
+
+// LIGHTS:
+
 #define LIGHTS				0x42
-// КОЛЕСА:
-#define FWHEEL_R			0x43 // переднее правое
-#define FWHEEL_L			0x44 // переднее левое
-#define RWHEEL_R			0x45 // заднее правое
-#define RWHEEL_L			0x46 // заднее левое
-// МАНИПУЛЯТОР:
-#define ARM_BASE_MOVE		0x47 // движение базы
-#define ARM_PIVOT_MOVE		0x48 // движение колена
-#define ARM_HAND_MOVE		0x49 // раскрытие клешни
-#define ARM_MANUAL			0x4A // ручное управление манипулятором
-#define ARM_MOVEBACK		0x4B // автоскладывание манипулятора
-// ЛАЗЕР:
-#define LASER				0x4C
-// ДВИГАТЕЛЬ:
-#define ENGINE_MANUAL		0x4D
-// ЦЕНТР ТЯЖЕСТИ И КЛИРЕНС:
-#define COM_AUTO			0x4E // автокалибровка центра тяжести
-#define COM_MANUAL			0x4F // ручное управление центром тяжести
-#define CLEARANCE_MANUAL	0x50 // ручное управление клиренсом
+
+// WHEELS:
+
+#define FWHEEL_R			0x43 // front right
+#define FWHEEL_L			0x44 // front left
+#define RWHEEL_R			0x45 // rear right
+#define RWHEEL_L			0x46 // rear left
+
+// MANIPULATOR:
+
+#define ARM_BASE_MOVE		  0x47 // manipulator base movement
+#define ARM_PIVOT_MOVE		0x48 // manipulator pivot movement
+#define ARM_HAND_MOVE		  0x49 // manipulator hand squeezing 
+#define ARM_MANUAL			  0x4A // manipulator manual control
+#define ARM_MOVEBACK		  0x4B // return manipulator to default position
+
+// LASER:
+
+#define LASER				      0x4C
+
+// ENGINE:
+
+#define ENGINE_MANUAL		  0x4D
+
+// CENTER OF MASS AND CLEARANCE:
+
+#define COM_AUTO			    0x4E // center of mass autocalibration
+#define COM_MANUAL			  0x4F // center of mass manual control
+#define CLEARANCE_MANUAL	0x50 // clearance manual control
